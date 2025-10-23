@@ -1,16 +1,33 @@
-package main
+package receiver
 
 import (
 	"fmt"
 	"net"
+	"os"
+	"strconv"
 )
 
 func main() {
-	addr := net.UDPAddr{
-		Port: 9000, // you can change this port
-		IP:   net.ParseIP("127.0.0.1"),
+	args := os.Args
+	if len(args) < 3 {
+		fmt.Println("Usage: go run receiver.go <IP> <Port>")
+        return
 	}
 
+	port, err := strconv.Atoi(args[2])
+	if err != nil {
+		panic(err)
+	}
+
+	addr := net.UDPAddr{
+		Port: port,
+		IP:   net.ParseIP(args[1]),
+	}
+
+	startServer(addr)
+}
+
+func startServer( addr net.UDPAddr){
 	conn, err := net.ListenUDP("udp", &addr)
 	if err != nil {
 		panic(err)

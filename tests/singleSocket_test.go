@@ -9,8 +9,6 @@ import (
 	"github.com/balaji-balachandran/ESRG_testing/sockets"
 )
 
-
-
 func TestSingleSocketConnection(t *testing.T){
 	serverIP := "127.0.0.1"
 	serverPort := 8000
@@ -29,23 +27,19 @@ func TestSingleSocketConnection(t *testing.T){
 	t.Run("Single Message", func(t *testing.T) {
 		conn, err := socket.NewUDPSingleSocket(net.ParseIP(local_ip), local_port);
 		if err != nil {
-			t.Errorf("Error when creating UDPSingleSocket: %v", err)
+			t.Fatalf("Error when creating UDPSingleSocket: %v", err)
 		}
 		c := client.NewClient(conn, server_addr)
 		
 		reply, addr, err := c.SendMessage("Single message test")
 		if err != nil {
-			t.Errorf("Error sending message over UDPSingleSocket: %v", err)
+			t.Fatalf("Error sending message over UDPSingleSocket: %v", err)
 		}
 		if reply != expected_reply{
 			t.Errorf("Incorrect reply from server. Expected %s, received %s", expected_reply, reply)
 		}
 		if addr.String() != server_addr.String() {
 			t.Errorf("Incorrect server address. Expected reply from server at %s, received from %s", server_addr.String(), addr.String())
-		}
-
-		
+		}	
 	})
-
-	
 }

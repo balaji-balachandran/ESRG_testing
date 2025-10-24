@@ -20,7 +20,7 @@ func NewClient(conn net.PacketConn, remote_addr net.UDPAddr) *UDPClient {
 	}
 }
 
-func (client UDPClient) sendMessage(message string) (string, net.Addr, error) {
+func (client UDPClient) SendMessage(message string) (string, net.Addr, error) {
 	buf := make([]byte, 1024)
 
 	client.conn.WriteTo([]byte(message[:]), &client.remote_addr)

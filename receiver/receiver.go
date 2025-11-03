@@ -25,7 +25,7 @@ func main() {
 		IP:   net.ParseIP(args[1]),
 	}
 
-	conn := server.StartServer(addr)
+	conn := server.StartServer(addr, true)
 	defer conn.Close()
 
 	// Block forever to keep server alive

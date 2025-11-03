@@ -20,8 +20,7 @@ func NewClient(conn net.PacketConn, remote_addr net.UDPAddr) *UDPClient {
 	}
 }
 
-func (client UDPClient) SendMessage(message string) (string, net.Addr, error) {
-	buf := make([]byte, 1024)
+func (client UDPClient) SendMessage(message string, buf []byte) (string, net.Addr, error) {
 
 	client.conn.WriteTo([]byte(message[:]), &client.remote_addr)
 
@@ -36,15 +35,12 @@ func (client UDPClient) SendMessage(message string) (string, net.Addr, error) {
 }
 
 // For debugging. Use 
-func (client UDPClient) StdinLoop(){
-	buf := make([]byte, 1024)
-	
+func (client UDPClient) StdinLoop(buf []byte, title string){	
 	for {
 		reader := bufio.NewReader(os.Stdin)
-		fmt.Print("Enter message to server: ")
+		fmt.Printf("[%s] Enter message to server: ", title)
 		message, _ := reader.ReadString('\n')
 		message = strings.TrimSpace(message)
-
 
 		client.conn.WriteTo([]byte(message[:]), &client.remote_addr)
 
@@ -54,6 +50,6 @@ func (client UDPClient) StdinLoop(){
 			return
 		}
 		reply := string(buf[:n])
-		fmt.Printf("Received from %s: %s\n", addr.String(), reply)
+		fmt.Printf("[%s] Received from %s: %s\n", title, addr.String(), reply)
 	}
 }

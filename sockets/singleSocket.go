@@ -6,18 +6,18 @@ import (
 )
 
 type UDPSingleSocket struct {
-	conn *net.UDPConn 
+	conn *net.UDPConn
 }
 
 // Constructor for UDP SingleSocket
-func NewUDPSingleSocket(ip net.IP, port int) (*UDPSingleSocket, error){
+func NewUDPSingleSocket(ip net.IP, port int) (*UDPSingleSocket, error) {
 	addr := &net.UDPAddr{
-		IP: ip,
+		IP:   ip,
 		Port: port,
 		// Zone: zone,
 	}
 
-	conn, err :=  net.ListenUDP("udp", addr)
+	conn, err := net.ListenUDP("udp", addr)
 	if err != nil {
 		return nil, err
 	}
@@ -27,12 +27,11 @@ func NewUDPSingleSocket(ip net.IP, port int) (*UDPSingleSocket, error){
 	}, nil
 }
 
-
-func (sock *UDPSingleSocket) ReadFrom(p []byte) (n int, addr net.Addr, err error){
+func (sock *UDPSingleSocket) ReadFrom(p []byte) (n int, addr net.Addr, err error) {
 	return sock.conn.ReadFromUDP(p)
 }
 
-func (sock *UDPSingleSocket) WriteTo(p []byte, addr net.Addr) (n int, err error){
+func (sock *UDPSingleSocket) WriteTo(p []byte, addr net.Addr) (n int, err error) {
 	udpAddr, err := net.ResolveUDPAddr("udp", addr.String())
 	if err != nil {
 		return -1, err
